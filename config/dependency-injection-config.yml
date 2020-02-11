@@ -1,0 +1,16 @@
+services:
+
+  model.customer:
+    class: 'models/Customer'
+
+  service.customer:
+    factory:
+      class: 'config/ServiceFactory'
+      method: createCustomerService
+      arguments: ['@model.customer']
+
+
+  controller.customer:
+    class: 'controllers/CustomerController'
+    arguments: ['@service.customer']
+    
