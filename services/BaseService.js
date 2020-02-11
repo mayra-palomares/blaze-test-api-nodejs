@@ -10,16 +10,23 @@ class BaseService {
     async getAll(query) {
         let { page, limit } = query
 
-        limit = limit ? Number(limit) : 10
-        let skip = page ? (Number(page) - 1)*limit : 0
+        limit = limit ? Number(limit) : null
+        let skip = page && limit? (Number(page) - 1)*limit : 0
         
-  
         try {
-            let items = await this.model
-            .find()
-            .skip(skip)
-            .limit(limit);
-            let total = await this.model.count()
+            let items
+            if(limit) {
+                items = await this.model
+                .find()
+                .skip(skip)
+                .limit(limit);
+            }else {
+                items = await this.model
+                .find()
+                .skip(skip);
+            }
+
+            let total = await this.model.countDocuments()
   
             return {
             error: false,
